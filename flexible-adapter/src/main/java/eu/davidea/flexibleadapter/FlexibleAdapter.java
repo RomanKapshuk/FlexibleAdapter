@@ -4116,6 +4116,7 @@ public class FlexibleAdapter<T extends IFlexible>
 								filteredItems.get(newOriginalPosition) : null;
 					} else {
 						if (headersShown && hasHeader(item) && !filteredItems.contains(header)) {
+							header.setHidden(false);
 							filteredItems.add(header);
 						}
 						filteredItems.add(item);
@@ -4138,10 +4139,11 @@ public class FlexibleAdapter<T extends IFlexible>
 				// Deleted items not yet committed should not appear
 				filteredItems.removeAll(getDeletedItems());
 			}
+			resetFilterFlags(filteredItems);
 			if (mOriginalItems == null) {
-				resetFilterFlags(filteredItems);
 				restoreScrollableHeadersAndFooters(filteredItems);
 			}
+			// After reset flags and scrollable items!
 			mOriginalItems = null;
 		}
 
@@ -4264,7 +4266,7 @@ public class FlexibleAdapter<T extends IFlexible>
 						subItem.setHidden(false);
 					}
 					// Show subItems for expanded items
-					if (expandable.isExpanded()) {
+					if (mOriginalItems == null && expandable.isExpanded()) {
 						if (i < items.size()) items.addAll(i + 1, subItems);
 						else items.addAll(subItems);
 						i += subItems.size();
@@ -4277,8 +4279,10 @@ public class FlexibleAdapter<T extends IFlexible>
 				if (header != sameHeader && header != null && !isExpandable((T) header)) {
 					header.setHidden(false);
 					sameHeader = header;
-					items.add(i, (T) header);
-					i++;
+					if (mOriginalItems == null) {
+						items.add(i, (T) header);
+						i++;
+					}
 				}
 			}
 		}

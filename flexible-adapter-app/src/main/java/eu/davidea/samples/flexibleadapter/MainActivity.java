@@ -837,7 +837,7 @@ public class MainActivity extends AppCompatActivity implements
 		if (mAdapter != null) {
 			String message = (mAdapter.hasSearchText() ? "Filtered " : "Refreshed ");
 			message += size + " items in " + mAdapter.getTime() + "ms";
-			Snackbar.make(findViewById(R.id.main_view), message, Snackbar.LENGTH_SHORT).show();
+			//Snackbar.make(findViewById(R.id.main_view), message, Snackbar.LENGTH_SHORT).show();
 		}
 	}
 
